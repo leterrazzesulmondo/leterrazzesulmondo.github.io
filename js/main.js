@@ -22,6 +22,18 @@
   var sections    = links.map(function (l) { return document.querySelector(l.getAttribute('href')); });
   var reduced     = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Hero: l'illustrazione resta larga quanto la riga "Bed & Breakfast..." ---------- */
+  var heroMotif   = document.querySelector('.hero__motif');
+  var heroEyebrow = document.querySelector('.hero__eyebrow');
+  function syncMotifWidth() {
+    if (heroMotif && heroEyebrow && heroEyebrow.offsetWidth) {
+      heroMotif.style.width = heroEyebrow.offsetWidth + 'px';
+    }
+  }
+  syncMotifWidth();
+  window.addEventListener('resize', syncMotifWidth);
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(syncMotifWidth); }
+
   /* ---------- Hero: video drone al posto della foto (mobile in avanti, desktop al contrario) ---------- */
   var heroVideoReady = false;
   var mobileHeroQuery = window.matchMedia('(max-width:760px)');

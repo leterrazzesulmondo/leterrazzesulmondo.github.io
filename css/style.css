@@ -303,14 +303,14 @@ body.no-scroll{overflow:hidden}
 .hero__content{position:relative;z-index:3;padding:0 28px;max-width:900px}
 
 .hero__motif{
-  display:block;width:min(640px,88vw);height:auto;margin:10px auto 28px;
+  display:block;width:min(420px,78vw);height:auto;margin:10px auto 28px;
   opacity:0;animation:fadeUp 1s var(--ease) .78s forwards;
 }
 
 .hero__eyebrow{
   font-size:11px;letter-spacing:.44em;text-transform:uppercase;
   color:var(--gold-soft);margin-bottom:30px;
-  display:flex;align-items:center;justify-content:center;gap:18px;
+  display:inline-flex;align-items:center;justify-content:center;gap:18px;
   opacity:0;animation:fadeUp 1s var(--ease) 1.02s forwards;
 }
 .hero__eyebrow::before,.hero__eyebrow::after{content:"";width:44px;height:1px;background:rgba(224,197,121,.6)}

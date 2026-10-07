@@ -36,7 +36,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/style.css?v=16">
+<link rel="stylesheet" href="css/style.css?v=19">
 </head>
 
 <body>
@@ -206,16 +206,39 @@
       </article>
 
       <article class="room reveal" data-delay="2">
-        <div class="room__media">
+        <div class="room__media room__carousel" data-interval="4200">
           <span class="room__tag">Secondo piano</span>
-          <img src="https://picsum.photos/seed/camera-zenit/800/600" alt="Camera Zenit con vasca idromassaggio e vista sui tetti di Gravina">
+          <div class="room__carousel-track">
+            <img class="is-active" src="img/camera-zenit-ambiente.jpg" alt="Camera Zenit, vasca idromassaggio e letto matrimoniale">
+            <img src="img/camera-zenit-ambiente2.jpg" alt="Camera Zenit, vista verso l'accesso al terrazzino privato">
+            <img src="img/camera-zenit-letto.jpg" alt="Camera Zenit, il letto con parete sabbia e quadretti">
+            <img src="img/camera-zenit-decorazione.jpg" alt="Camera Zenit, angolo con composizione di erba pampas">
+            <img src="img/camera-zenit-candele-vasca.jpg" alt="Camera Zenit, candele sul bordo della vasca idromassaggio">
+            <img src="img/camera-zenit-candele-salotto.jpg" alt="Camera Zenit, dettaglio candele sul tavolino">
+            <img src="img/camera-zenit-doccia.jpg" alt="Camera Zenit, doccia a pioggia con maioliche pugliesi">
+            <img src="img/camera-zenit-lavabo.jpg" alt="Camera Zenit, lavabo scolpito in legno fossile">
+            <img src="img/camera-zenit-specchio.jpg" alt="Camera Zenit, specchio che riflette la camera">
+            <img src="img/camera-zenit-accessori.jpg" alt="Camera Zenit, set bagno sul lavabo in legno fossile">
+          </div>
+          <div class="room__carousel-dots" aria-hidden="true">
+            <button class="is-active"></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+          </div>
           <span class="room__zoom" aria-hidden="true"></span>
         </div>
         <div class="room__body">
           <h3>Camera Zenit</h3>
           <p class="room__price">da <b>140 €</b> / notte</p>
-          <p>La più lussuosa della dimora: al secondo piano, con vasca idromassaggio privata e la luce che cambia tutto il giorno sui tetti della gravina. (Foto in arrivo.)</p>
-          <div class="room__meta"><span>2 ospiti</span><span>Bagno privato</span><span>Vasca idromassaggio</span><span>Smart TV</span></div>
+          <p>La più lussuosa della dimora: al secondo piano, con vasca idromassaggio nella camera stessa, parete sabbia e accesso diretto al terrazzino privato. Nel bagno, doccia a pioggia con maioliche pugliesi e lo stesso lavabo in legno fossile scolpito a mano.</p>
+          <div class="room__meta"><span>2 ospiti</span><span>Vasca idromassaggio</span><span>Terrazza privata</span><span>Smart TV</span></div>
         </div>
       </article>
     </div>
@@ -475,7 +498,7 @@
   <button class="lightbox__nav lightbox__next" id="lb-next" aria-label="Immagine successiva">&#8250;</button>
 </div>
 
-<script src="js/main.js?v=14"></script>
+<script src="js/main.js?v=15"></script>
 
 </body>
 </html>
