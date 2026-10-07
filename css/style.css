@@ -34,7 +34,7 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-html{scroll-behavior:smooth;scroll-padding-top:var(--nav-h);-webkit-text-size-adjust:100%;overflow-x:hidden;width:100%;overscroll-behavior-x:none}
+html{scroll-behavior:smooth;scroll-padding-top:var(--nav-h);-webkit-text-size-adjust:100%}
 
 body{
   font-family:var(--font-sans);
@@ -235,7 +235,7 @@ body.no-scroll{overflow:hidden}
 /* ============================================================
    HERO
    ============================================================ */
-.hero{position:relative;height:200vh;color:#fff;max-width:100vw;overflow-x:hidden}
+.hero{position:relative;height:200vh;color:#fff;max-width:100vw}
 .hero__pin-wrap{
   position:sticky;top:0;height:100svh;
   display:flex;align-items:center;justify-content:center;
