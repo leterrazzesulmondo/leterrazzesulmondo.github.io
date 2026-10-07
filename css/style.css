@@ -303,7 +303,7 @@ body.no-scroll{overflow:hidden}
 .hero__content{position:relative;z-index:3;padding:0 28px;max-width:900px}
 
 .hero__motif{
-  display:block;width:min(360px,70vw);height:auto;margin:6px auto 26px;
+  display:block;width:min(640px,88vw);height:auto;margin:10px auto 28px;
   opacity:0;animation:fadeUp 1s var(--ease) .78s forwards;
 }
 
