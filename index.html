@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Le Terrazze sul Mondo — B&amp;B a Gravina in Puglia</title>
-<meta name="description" content="Le Terrazze sul Mondo, bed &amp; breakfast di charme nel cuore antico di Gravina in Puglia. Camere raffinate, colazione pugliese e terrazze affacciate sulla gravina.">
+<meta name="description" content="Le Terrazze sul Mondo, bed &amp; breakfast dal fascino antico nel cuore storico di Gravina in Puglia. Camere raffinate, colazione pugliese e terrazze affacciate sulla gravina.">
 <!-- SITO IN LAVORAZIONE: rimuovere la riga seguente al lancio, con dominio e contenuti definitivi. -->
 <meta name="robots" content="noindex, nofollow">
 
@@ -13,13 +13,18 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
+<!-- "Aggiungi a Home" (iOS e Android, fuori dagli store) -->
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Le Terrazze">
+
 <!-- Anteprima alla condivisione del link (WhatsApp, Facebook, ecc.)
      NB: aggiornare og:url e og:image con il dominio definitivo al lancio. -->
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:site_name" content="Le Terrazze sul Mondo">
 <meta property="og:title" content="Le Terrazze sul Mondo — B&amp;B a Gravina in Puglia">
-<meta property="og:description" content="Dimora di charme nel centro storico di Gravina in Puglia: camere raffinate, colazione pugliese e terrazze affacciate sulla gravina.">
+<meta property="og:description" content="Dimora dal fascino antico nel centro storico di Gravina in Puglia: camere raffinate, colazione pugliese e terrazze affacciate sulla gravina.">
 <meta property="og:url" content="https://leterrazzesulmondo.github.io/">
 <meta property="og:image" content="https://leterrazzesulmondo.github.io/og-image.jpg">
 <meta property="og:image:width" content="1200">
@@ -31,7 +36,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=15">
 </head>
 
 <body>
@@ -41,7 +46,6 @@
   <div class="nav__inner">
     <a href="#hero" class="brand" aria-label="Le Terrazze sul Mondo — home">
       <span class="brand__name">Le Terrazze sul Mondo</span>
-      <span class="brand__sub">Gravina in Puglia</span>
     </a>
 
     <nav aria-label="Navigazione principale">
@@ -72,26 +76,39 @@
 
 <!-- ============================ HERO ============================ -->
 <section class="hero" id="hero">
-  <div class="hero__bg" id="hero-bg" role="img" aria-label="Veduta di Gravina in Puglia al tramonto"></div>
-  <div class="hero__scrim"></div>
+  <div class="hero__pin-wrap">
+    <div class="hero__bg" id="hero-bg" role="img" aria-label="Veduta aerea di Gravina in Puglia, con il ponte acquedotto e il centro storico"></div>
+    <video class="hero__video" id="hero-video" muted playsinline autoplay preload="auto" aria-label="Volo in drone su Gravina in Puglia, dal canyon al terrazzino del B&amp;B"></video>
+    <div class="hero__veil" id="hero-veil"></div>
+    <div class="hero__scrim" id="hero-scrim"></div>
+    <span class="hero__pin" id="hero-pin" aria-hidden="true">
+      <span class="hero__pin-label">Ci troviamo qui</span>
+      <span class="hero__pin-wave" style="animation-delay:0s"></span>
+      <span class="hero__pin-wave" style="animation-delay:.7s"></span>
+      <span class="hero__pin-wave" style="animation-delay:1.4s"></span>
+      <span class="hero__pin-wave" style="animation-delay:2.1s"></span>
+      <span class="hero__pin-dot"></span>
+    </span>
 
-  <div class="hero__content">
-    <p class="hero__eyebrow">Bed &amp; Breakfast · Gravina in Puglia</p>
-    <h1 class="hero__title">
-      <span><i>Le Terrazze</i></span>
-      <span><i class="accent">sul Mondo</i></span>
-    </h1>
-    <p class="hero__sub">Una dimora di charme sospesa sul canyon della gravina, dove la pietra antica incontra il comfort contemporaneo e ogni alba ha il colore del tufo.</p>
-    <div class="hero__actions">
-      <a href="#camere" class="btn btn--primary"><span>Scopri le camere</span></a>
-      <a href="#prenota" class="btn btn--ghost"><span>Verifica disponibilità</span></a>
+    <div class="hero__content" id="hero-content">
+      <h1 class="hero__title">
+        <span><i>Le Terrazze</i></span>
+        <span><i class="accent">sul Mondo</i></span>
+      </h1>
+      <img class="hero__motif" src="img/hero-illustrazione.png" alt="" aria-hidden="true">
+      <p class="hero__eyebrow">Bed &amp; Breakfast · Gravina in Puglia</p>
+      <p class="hero__sub">Una dimora dal fascino antico sospesa sul canyon della gravina, dove la pietra antica incontra il comfort contemporaneo e ogni alba ha il colore del tufo.</p>
+      <div class="hero__actions">
+        <a href="#camere" class="btn btn--primary"><span>Scopri le camere</span></a>
+        <a href="#prenota" class="btn btn--ghost"><span>Verifica disponibilità</span></a>
+      </div>
     </div>
-  </div>
 
-  <a href="#chi-siamo" class="hero__scroll" aria-label="Scorri verso il basso">
-    <span class="line"></span>
-    Scorri
-  </a>
+    <a href="#chi-siamo" class="hero__scroll" id="hero-scroll" aria-label="Scorri verso il basso">
+      <span class="line"></span>
+      Scorri
+    </a>
+  </div>
 </section>
 
 <!-- ============================ CHI SIAMO ============================ -->
@@ -117,6 +134,8 @@
         </p>
       </div>
     </div>
+
+    <div class="tile-band reveal" aria-hidden="true"></div>
 
     <div class="features">
       <div class="feature reveal" data-delay="1">
@@ -148,47 +167,55 @@
   <div class="container">
     <div class="head-center reveal">
       <p class="eyebrow eyebrow--center">Le camere</p>
-      <h2 class="section-title">Cinque stanze, <em>cinque atmosfere</em></h2>
-      <p class="lead">Ogni camera porta il nome di un elemento del paesaggio gravinese. Biancheria in lino, bagno privato, climatizzazione silenziosa e Wi-Fi in fibra: il comfort resta discreto, la vista no.</p>
+      <h2 class="section-title">Due stanze, <em>due punti di vista</em></h2>
+      <p class="lead">Zenit e Nadir: il punto più alto e il punto più basso, la stessa cura in ogni dettaglio. Biancheria pregiata, bagno privato con finiture artigianali, climatizzazione silenziosa e Wi-Fi in fibra.</p>
     </div>
 
     <div class="rooms">
       <article class="room reveal" data-delay="1">
-        <div class="room__media">
-          <span class="room__tag">Vista canyon</span>
-          <img src="https://picsum.photos/seed/camera-tufo/800/600" alt="Camera Tufo con letto matrimoniale e volta in pietra">
+        <div class="room__media room__carousel" data-interval="4200">
+          <span class="room__tag">Primo piano</span>
+          <div class="room__carousel-track">
+            <img class="is-active" src="img/camera-nadir-ambiente.jpg" alt="Camera Nadir, vista d'insieme con letto e volta a botte">
+            <img src="img/camera-nadir-vista-letto.jpg" alt="Camera Nadir, il letto matrimoniale con biancheria verde salvia">
+            <img src="img/camera-nadir-dettaglio.jpg" alt="Camera Nadir, dettaglio della testiera in velluto">
+            <img src="img/camera-nadir-parete-tv.jpg" alt="Camera Nadir, parete con smart TV e climatizzatore">
+            <img src="img/camera-nadir-angolo.jpg" alt="Camera Nadir, angolo con armadio e poltroncina">
+            <img src="img/camera-nadir-doccia.jpg" alt="Camera Nadir, doccia a pioggia con maioliche pugliesi">
+            <img src="img/camera-nadir-bagno.jpg" alt="Camera Nadir, lavabo scolpito in legno fossile">
+            <img src="img/camera-nadir-candele.jpg" alt="Camera Nadir, dettaglio candele sul comodino">
+          </div>
+          <div class="room__carousel-dots" aria-hidden="true">
+            <button class="is-active"></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+          </div>
+          <span class="room__zoom" aria-hidden="true"></span>
         </div>
         <div class="room__body">
-          <h3>Camera Tufo</h3>
+          <h3>Camera Nadir</h3>
           <p class="room__price">da <b>95 €</b> / notte</p>
-          <p>La più luminosa: volta a stella, letto matrimoniale in ferro battuto e due finestre aperte sul precipizio della gravina.</p>
-          <div class="room__meta"><span>28 m²</span><span>2 ospiti</span><span>Bagno privato</span><span>Vista</span></div>
+          <p>La più raccolta e intima: volta a botte imbiancata a calce, testiera in velluto e biancheria verde salvia. Nel bagno privato, una doccia a pioggia con parete in maioliche pugliesi e un lavabo scolpito in un unico blocco di legno fossile.</p>
+          <div class="room__meta"><span>2 ospiti</span><span>Bagno privato</span><span>Doccia pioggia</span><span>Smart TV</span></div>
         </div>
       </article>
 
       <article class="room reveal" data-delay="2">
         <div class="room__media">
-          <span class="room__tag">Con terrazza</span>
-          <img src="https://picsum.photos/seed/camera-acquedotto/800/600" alt="Camera Acquedotto con accesso alla terrazza privata">
+          <span class="room__tag">Secondo piano</span>
+          <img src="https://picsum.photos/seed/camera-zenit/800/600" alt="Camera Zenit con vasca idromassaggio e vista sui tetti di Gravina">
+          <span class="room__zoom" aria-hidden="true"></span>
         </div>
         <div class="room__body">
-          <h3>Camera Acquedotto</h3>
-          <p class="room__price">da <b>115 €</b> / notte</p>
-          <p>Accesso diretto alla terrazza privata con tavolino e sdraio, perfetta per la colazione al sole e per l'aperitivo al tramonto.</p>
-          <div class="room__meta"><span>32 m²</span><span>2 ospiti</span><span>Terrazza</span><span>Vasca</span></div>
-        </div>
-      </article>
-
-      <article class="room reveal" data-delay="3">
-        <div class="room__media">
-          <span class="room__tag">Familiare</span>
-          <img src="https://picsum.photos/seed/camera-grano/800/600" alt="Camera Grano familiare con quattro posti letto">
-        </div>
-        <div class="room__body">
-          <h3>Camera Grano</h3>
+          <h3>Camera Zenit</h3>
           <p class="room__price">da <b>140 €</b> / notte</p>
-          <p>Ampia suite con zona notte separata e divano letto: pensata per famiglie o per chi desidera semplicemente più spazio.</p>
-          <div class="room__meta"><span>42 m²</span><span>4 ospiti</span><span>Salotto</span><span>Cucinino</span></div>
+          <p>La più lussuosa della dimora: al secondo piano, con vasca idromassaggio privata e la luce che cambia tutto il giorno sui tetti della gravina. (Foto in arrivo.)</p>
+          <div class="room__meta"><span>2 ospiti</span><span>Bagno privato</span><span>Vasca idromassaggio</span><span>Smart TV</span></div>
         </div>
       </article>
     </div>
@@ -277,10 +304,10 @@
 
     <div class="gallery" id="gallery">
       <figure class="g-tall reveal"><img src="https://picsum.photos/seed/gal-1/700/1400" alt="Terrazza panoramica al tramonto"><span class="plus"></span></figure>
-      <figure class="reveal" data-delay="1"><img src="https://picsum.photos/seed/gal-2/700/700" alt="Dettaglio di volta in tufo"><span class="plus"></span></figure>
+      <figure class="reveal" data-delay="1"><img src="img/camera-nadir-dettaglio.jpg" alt="Dettaglio della volta a botte nella Camera Nadir"><span class="plus"></span></figure>
       <figure class="reveal" data-delay="2"><img src="https://picsum.photos/seed/gal-3/700/700" alt="Colazione pugliese servita in terrazza"><span class="plus"></span></figure>
       <figure class="g-tall reveal" data-delay="3"><img src="https://picsum.photos/seed/gal-4/700/1400" alt="Scala in pietra della dimora"><span class="plus"></span></figure>
-      <figure class="reveal" data-delay="1"><img src="https://picsum.photos/seed/gal-5/700/700" alt="Bagno con finiture artigianali"><span class="plus"></span></figure>
+      <figure class="reveal" data-delay="1"><img src="img/camera-nadir-bagno.jpg" alt="Lavabo in legno fossile nel bagno della Camera Nadir"><span class="plus"></span></figure>
       <figure class="reveal" data-delay="2"><img src="https://picsum.photos/seed/gal-6/700/700" alt="Salotto comune con camino"><span class="plus"></span></figure>
       <figure class="reveal" data-delay="1"><img src="https://picsum.photos/seed/gal-7/700/700" alt="Vicolo del centro storico di Gravina"><span class="plus"></span></figure>
       <figure class="reveal" data-delay="2"><img src="https://picsum.photos/seed/gal-8/700/700" alt="Vista notturna sul canyon"><span class="plus"></span></figure>
@@ -411,9 +438,8 @@
             <label for="camera">Camera preferita</label>
             <select id="camera" name="camera">
               <option>Nessuna preferenza</option>
-              <option>Camera Tufo</option>
-              <option>Camera Acquedotto</option>
-              <option>Camera Grano</option>
+              <option>Camera Nadir</option>
+              <option>Camera Zenit</option>
             </select>
           </div>
         </div>
@@ -449,7 +475,7 @@
   <button class="lightbox__nav lightbox__next" id="lb-next" aria-label="Immagine successiva">&#8250;</button>
 </div>
 
-<script src="js/main.js"></script>
+<script src="js/main.js?v=14"></script>
 
 </body>
 </html>

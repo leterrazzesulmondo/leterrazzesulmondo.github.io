@@ -7,13 +7,54 @@
 (function () {
   'use strict';
 
-  var nav        = document.getElementById('nav');
-  var burger     = document.getElementById('burger');
-  var mobileMenu = document.getElementById('mobile-menu');
-  var heroBg     = document.getElementById('hero-bg');
-  var links      = Array.prototype.slice.call(document.querySelectorAll('.nav__link'));
-  var sections   = links.map(function (l) { return document.querySelector(l.getAttribute('href')); });
-  var reduced    = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var nav         = document.getElementById('nav');
+  var burger      = document.getElementById('burger');
+  var mobileMenu  = document.getElementById('mobile-menu');
+  var hero        = document.getElementById('hero');
+  var heroBg      = document.getElementById('hero-bg');
+  var heroVideo   = document.getElementById('hero-video');
+  var heroVeil    = document.getElementById('hero-veil');
+  var heroScrim   = document.getElementById('hero-scrim');
+  var heroPin     = document.getElementById('hero-pin');
+  var heroContent = document.getElementById('hero-content');
+  var heroScroll  = document.getElementById('hero-scroll');
+  var links       = Array.prototype.slice.call(document.querySelectorAll('.nav__link'));
+  var sections    = links.map(function (l) { return document.querySelector(l.getAttribute('href')); });
+  var reduced     = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Hero: video drone al posto della foto (mobile in avanti, desktop al contrario) ---------- */
+  var heroVideoReady = false;
+  var mobileHeroQuery = window.matchMedia('(max-width:760px)');
+
+  function desiredHeroVideo() {
+    return mobileHeroQuery.matches
+      ? { src: 'img/hero-mobile.mp4', poster: 'img/hero-mobile-poster.jpg' }
+      : { src: 'img/hero-desktop.mp4', poster: 'img/hero-desktop-poster.jpg' };
+  }
+
+  function ensureHeroVideo() {
+    if (!heroVideo || reduced) return;
+    var want = desiredHeroVideo();
+    if (heroVideo.getAttribute('data-loaded') === want.src) return;
+    heroVideo.setAttribute('data-loaded', want.src);
+    heroVideoReady = false;
+    heroVideo.poster = want.poster;
+    heroVideo.addEventListener('loadedmetadata', function () {
+      heroVideoReady = true;
+      /* Molti browser ignorano currentTime finché il video non e' stato
+         "avviato" una volta: lo si avvia muto e si mette subito in pausa. */
+      var p = heroVideo.play();
+      if (p && p.then) p.then(function () { heroVideo.pause(); }).catch(function () {});
+    }, { once: true });
+    heroVideo.src = want.src;
+    heroVideo.load();
+  }
+  ensureHeroVideo();
+  if (mobileHeroQuery.addEventListener) {
+    mobileHeroQuery.addEventListener('change', ensureHeroVideo);
+  } else if (mobileHeroQuery.addListener) {
+    mobileHeroQuery.addListener(ensureHeroVideo);
+  }
 
   /* ---------- Navbar: trasparente sulla hero, opaca allo scroll ---------- */
   function onScroll() {
@@ -21,9 +62,37 @@
 
     nav.classList.toggle('is-scrolled', y > 70);
 
-    /* Parallax leggero sulla hero (solo finché è visibile) */
-    if (heroBg && !reduced && y < window.innerHeight * 1.2) {
-      heroBg.style.transform = 'translate3d(0,' + (y * 0.32) + 'px,0)';
+    /* Hero "pinnata": i testi scorrono e svaniscono, la foto esce dalla
+       foschia e mette a fuoco il punto esatto, poi la sezione si sblocca. */
+    if (hero && !reduced) {
+      var scrollRange = Math.max(hero.offsetHeight - window.innerHeight, 1);
+      /* La messa a fuoco si completa al 70% dello scroll pinnato: il restante
+         30% e' una sosta a fuoco, prima che la sezione si sblocchi. */
+      var focus = Math.min(Math.max((y / scrollRange) / 0.7, 0), 1);
+      var textT = Math.min(focus / 0.5, 1);
+
+      var heroFilter = 'blur(' + (3 * (1 - focus)).toFixed(2) + 'px) saturate(' + (0.95 + 0.05 * focus).toFixed(3) + ')';
+      heroBg.style.filter = heroFilter;
+      if (heroVideo) {
+        heroVideo.style.filter = heroFilter;
+        if (heroVideoReady && heroVideo.duration) {
+          var t = focus * heroVideo.duration;
+          if (Math.abs(heroVideo.currentTime - t) > 0.03) {
+            try { heroVideo.currentTime = t; } catch (err) { /* seek non pronto, ignora */ }
+          }
+        }
+      }
+      if (heroVeil) heroVeil.style.opacity = (0.28 * (1 - focus)).toFixed(3);
+      if (heroScrim) heroScrim.style.opacity = (1 - 0.8 * focus).toFixed(3);
+      if (heroPin) heroPin.classList.toggle('is-visible', focus > 0.6);
+      if (heroContent) {
+        heroContent.style.opacity = (1 - textT).toFixed(3);
+        heroContent.style.transform = 'translateY(' + (-60 * textT).toFixed(1) + 'px)';
+      }
+      if (heroScroll && y > 0) {
+        heroScroll.style.animation = 'none';
+        heroScroll.style.opacity = Math.max(1 - focus / 0.12, 0).toFixed(3);
+      }
     }
 
     /* Link attivo in base alla sezione visibile */
@@ -99,17 +168,54 @@
     revealables.forEach(function (el) { el.classList.add('is-visible'); });
   }
 
-  /* ---------- Lightbox galleria ---------- */
-  var gallery  = document.getElementById('gallery');
-  var lightbox = document.getElementById('lightbox');
-  var lbImg    = document.getElementById('lb-img');
-  var figures  = Array.prototype.slice.call(gallery.querySelectorAll('img'));
-  var index    = 0;
+  /* ---------- Carosello foto camere ---------- */
+  document.querySelectorAll('.room__carousel').forEach(function (carousel) {
+    var imgs = Array.prototype.slice.call(carousel.querySelectorAll('.room__carousel-track img'));
+    var dots = Array.prototype.slice.call(carousel.querySelectorAll('.room__carousel-dots button'));
+    if (imgs.length < 2) return;
 
-  function openLightbox(i) {
-    index = (i + figures.length) % figures.length;
-    lbImg.src = figures[index].src;
-    lbImg.alt = figures[index].alt;
+    var current  = 0;
+    var interval = parseInt(carousel.getAttribute('data-interval'), 10) || 4500;
+    var timer    = null;
+
+    function show(i) {
+      current = (i + imgs.length) % imgs.length;
+      imgs.forEach(function (img, n) { img.classList.toggle('is-active', n === current); });
+      dots.forEach(function (dot, n) { dot.classList.toggle('is-active', n === current); });
+    }
+
+    function start() {
+      if (reduced) return;
+      stop();
+      timer = setInterval(function () { show(current + 1); }, interval);
+    }
+    function stop() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    dots.forEach(function (dot, n) {
+      dot.addEventListener('click', function (e) { e.stopPropagation(); show(n); start(); });
+    });
+
+    carousel.addEventListener('mouseenter', stop);
+    carousel.addEventListener('mouseleave', start);
+
+    start();
+  });
+
+  /* ---------- Lightbox (galleria + camere) ---------- */
+  var gallery      = document.getElementById('gallery');
+  var lightbox     = document.getElementById('lightbox');
+  var lbImg        = document.getElementById('lb-img');
+  var figures      = Array.prototype.slice.call(gallery.querySelectorAll('img'));
+  var lightboxList = figures;
+  var index        = 0;
+
+  function openLightbox(list, i) {
+    lightboxList = list;
+    index = (i + list.length) % list.length;
+    lbImg.src = list[index].src;
+    lbImg.alt = list[index].alt;
     lightbox.classList.add('is-open');
     document.body.classList.add('no-scroll');
   }
@@ -121,19 +227,28 @@
   gallery.addEventListener('click', function (e) {
     var fig = e.target.closest('figure');
     if (!fig) return;
-    openLightbox(figures.indexOf(fig.querySelector('img')));
+    openLightbox(figures, figures.indexOf(fig.querySelector('img')));
+  });
+
+  document.querySelectorAll('.room__media').forEach(function (media) {
+    var roomImgs = Array.prototype.slice.call(media.querySelectorAll('img'));
+    if (!roomImgs.length) return;
+    media.addEventListener('click', function () {
+      var active = roomImgs.findIndex(function (img) { return img.classList.contains('is-active'); });
+      openLightbox(roomImgs, active > -1 ? active : 0);
+    });
   });
 
   document.getElementById('lb-close').addEventListener('click', closeLightbox);
-  document.getElementById('lb-prev').addEventListener('click', function (e) { e.stopPropagation(); openLightbox(index - 1); });
-  document.getElementById('lb-next').addEventListener('click', function (e) { e.stopPropagation(); openLightbox(index + 1); });
+  document.getElementById('lb-prev').addEventListener('click', function (e) { e.stopPropagation(); openLightbox(lightboxList, index - 1); });
+  document.getElementById('lb-next').addEventListener('click', function (e) { e.stopPropagation(); openLightbox(lightboxList, index + 1); });
   lightbox.addEventListener('click', function (e) { if (e.target === lightbox) closeLightbox(); });
 
   document.addEventListener('keydown', function (e) {
     if (!lightbox.classList.contains('is-open')) return;
     if (e.key === 'Escape')     closeLightbox();
-    if (e.key === 'ArrowLeft')  openLightbox(index - 1);
-    if (e.key === 'ArrowRight') openLightbox(index + 1);
+    if (e.key === 'ArrowLeft')  openLightbox(lightboxList, index - 1);
+    if (e.key === 'ArrowRight') openLightbox(lightboxList, index + 1);
   });
 
   /* ---------- Form (demo: nessun invio reale) ---------- */
