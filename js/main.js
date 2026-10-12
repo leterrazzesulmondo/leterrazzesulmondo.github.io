@@ -40,8 +40,8 @@
 
   function desiredHeroVideo() {
     return mobileHeroQuery.matches
-      ? { src: 'img/hero-mobile.mp4', poster: 'img/hero-mobile-poster.jpg' }
-      : { src: 'img/hero-desktop.mp4', poster: 'img/hero-desktop-poster.jpg' };
+      ? { src: 'img/hero-mobile.mp4?v=2', poster: 'img/hero-mobile-poster.jpg' }
+      : { src: 'img/hero-desktop.mp4?v=2', poster: 'img/hero-desktop-poster.jpg' };
   }
 
   function ensureHeroVideo() {
@@ -68,6 +68,26 @@
     mobileHeroQuery.addListener(ensureHeroVideo);
   }
 
+  /* ---------- Hero: il video segue lo scroll con inerzia ----------
+     Lo scroll fissa solo il punto d'arrivo (videoFocus); un ciclo a parte
+     avvicina il fotogramma a quel punto un passo alla volta e non chiede un
+     nuovo salto finche' il precedente non e' stato eseguito: cosi' il video
+     scorre fluido invece di rincorrere ogni singolo evento di scroll. */
+  var videoFocus = 0;
+  var videoPos   = 0;
+  function videoLoop() {
+    if (heroVideo && heroVideoReady && heroVideo.duration) {
+      var target = videoFocus * heroVideo.duration;
+      videoPos += (target - videoPos) * 0.16;
+      if (Math.abs(target - videoPos) < 0.004) videoPos = target;
+      if (!heroVideo.seeking && Math.abs(heroVideo.currentTime - videoPos) > 0.012) {
+        try { heroVideo.currentTime = videoPos; } catch (err) { /* seek non pronto, ignora */ }
+      }
+    }
+    window.requestAnimationFrame(videoLoop);
+  }
+  if (heroVideo && !reduced) window.requestAnimationFrame(videoLoop);
+
   /* ---------- Navbar: trasparente sulla hero, opaca allo scroll ---------- */
   function onScroll() {
     var y = window.pageYOffset || document.documentElement.scrollTop;
@@ -87,12 +107,7 @@
       heroBg.style.filter = heroFilter;
       if (heroVideo) {
         heroVideo.style.filter = heroFilter;
-        if (heroVideoReady && heroVideo.duration) {
-          var t = focus * heroVideo.duration;
-          if (Math.abs(heroVideo.currentTime - t) > 0.03) {
-            try { heroVideo.currentTime = t; } catch (err) { /* seek non pronto, ignora */ }
-          }
-        }
+        videoFocus = focus;
       }
       if (heroVeil) heroVeil.style.opacity = (0.28 * (1 - focus)).toFixed(3);
       if (heroScrim) heroScrim.style.opacity = (1 - 0.8 * focus).toFixed(3);
@@ -166,10 +181,19 @@
   var revealables = document.querySelectorAll('.reveal');
 
   if ('IntersectionObserver' in window && !reduced) {
+    /* A reveal finito si toglie la classe: hover e transizioni proprie
+       dell'elemento non devono ereditare durata e ritardo dell'entrata. */
+    var settle = function (el) {
+      setTimeout(function () {
+        el.classList.remove('reveal', 'reveal--left', 'reveal--right', 'reveal--scale');
+        el.removeAttribute('data-delay');
+      }, 2800);
+    };
     var io = new IntersectionObserver(function (entries, obs) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-visible');
+          settle(entry.target);
           obs.unobserve(entry.target);
         }
       });
@@ -196,8 +220,9 @@
       dots.forEach(function (dot, n) { dot.classList.toggle('is-active', n === current); });
     }
 
+    var onScreen = true;
     function start() {
-      if (reduced) return;
+      if (reduced || !onScreen || document.hidden) return;
       stop();
       timer = setInterval(function () { show(current + 1); }, interval);
     }
@@ -212,6 +237,16 @@
     carousel.addEventListener('mouseenter', stop);
     carousel.addEventListener('mouseleave', start);
 
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        onScreen = entries[0].isIntersecting;
+        if (onScreen) { start(); } else { stop(); }
+      }, { threshold: 0.2 }).observe(carousel);
+    }
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { stop(); } else { start(); }
+    });
+
     start();
   });
 
@@ -224,10 +259,25 @@
   var index        = 0;
 
   function openLightbox(list, i) {
+    var wasOpen = lightbox.classList.contains('is-open');
     lightboxList = list;
     index = (i + list.length) % list.length;
-    lbImg.src = list[index].src;
-    lbImg.alt = list[index].alt;
+    var next = list[index];
+
+    if (wasOpen && !reduced) {
+      /* Foto -> foto: sfuma, cambia sorgente, riappare a immagine pronta. */
+      lbImg.classList.add('is-swapping');
+      setTimeout(function () {
+        lbImg.onload = function () { lbImg.classList.remove('is-swapping'); lbImg.onload = null; };
+        lbImg.src = next.src;
+        lbImg.alt = next.alt;
+        if (lbImg.complete) { lbImg.classList.remove('is-swapping'); }
+      }, 180);
+    } else {
+      lbImg.classList.remove('is-swapping');
+      lbImg.src = next.src;
+      lbImg.alt = next.alt;
+    }
     lightbox.classList.add('is-open');
     document.body.classList.add('no-scroll');
   }
