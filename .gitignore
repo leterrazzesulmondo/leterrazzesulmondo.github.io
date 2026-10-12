@@ -1,0 +1,5 @@
+
+# cartelle di servizio degli strumenti di lavoro
+.impeccable/
+.playwright-mcp/
+.claude/
