@@ -322,7 +322,7 @@
   /* ---------- Form richiesta disponibilita' ---------- */
   /* Indirizzo del servizio che inoltra le richieste via email (Formspark, dati in UE):
      https://submit-form.com/<id del modulo>. Finche' e' vuoto il modulo non invia e rimanda a WhatsApp. */
-  var FORM_URL = '';
+  var FORM_URL = 'https://submit-form.com/ETS5ee8DK';
   var WHATSAPP = 'https://wa.me/393280639712';
 
   var form = document.getElementById('booking-form');
