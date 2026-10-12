@@ -320,8 +320,8 @@
   });
 
   /* ---------- Form richiesta disponibilita' ---------- */
-  /* Indirizzo del servizio che inoltra le richieste via email (Formspree):
-     finche' e' vuoto il modulo non invia e rimanda a WhatsApp. */
+  /* Indirizzo del servizio che inoltra le richieste via email (Formspark, dati in UE):
+     https://submit-form.com/<id del modulo>. Finche' e' vuoto il modulo non invia e rimanda a WhatsApp. */
   var FORM_URL = '';
   var WHATSAPP = 'https://wa.me/393280639712';
 
@@ -355,7 +355,7 @@
     if (form.arrivo.value && form.partenza.value && form.partenza.value < form.arrivo.value) {
       showError('La partenza deve essere dopo l\'arrivo.', form.partenza); return;
     }
-    if (form._gotcha.value) { return; }
+    if (form._honeypot.value) { return; }
 
     if (!FORM_URL) {
       showError('L\'invio dal sito non è ancora attivo. Scrivici su <a href="' + WHATSAPP + '" target="_blank" rel="noopener">WhatsApp</a> o chiamaci.');
@@ -367,8 +367,8 @@
 
     fetch(FORM_URL, {
       method: 'POST',
-      body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
+      body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
     }).then(function (res) {
       if (!res.ok) throw new Error('invio');
       form.reset();

@@ -32,12 +32,10 @@
 <meta property="og:image:alt" content="Le Terrazze sul Mondo — Bed &amp; Breakfast, Gravina in Puglia">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#b5613f">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts/fonts.css">
 
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="css/style.css?v=74">
+<link rel="stylesheet" href="css/style.css?v=85">
 </head>
 
 <body>
@@ -46,7 +44,8 @@
 <header class="nav" id="nav">
   <div class="nav__inner">
     <a href="#hero" class="brand" aria-label="Le Terrazze sul Mondo — home">
-      <span class="brand__name">Le Terrazze sul Mondo</span>
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span class="visually-hidden">Le Terrazze sul Mondo</span>
     </a>
 
     <nav aria-label="Navigazione principale">
@@ -483,15 +482,14 @@
           <textarea id="messaggio" name="messaggio" placeholder="Raccontaci del tuo viaggio…"></textarea>
         </div>
 
-        <input type="hidden" name="_subject" value="Nuova richiesta dal sito Le Terrazze sul Mondo">
         <div class="field--trap" aria-hidden="true">
           <label for="sito-web">Non compilare questo campo</label>
-          <input type="text" id="sito-web" name="_gotcha" tabindex="-1" autocomplete="off">
+          <input type="text" id="sito-web" name="_honeypot" tabindex="-1" autocomplete="off">
         </div>
 
         <p class="form__err" id="form-err" role="alert" hidden></p>
         <button type="submit" class="btn"><span>Invia richiesta</span></button>
-        <p class="form__note">Nessun pagamento richiesto ora: ti rispondiamo con disponibilità e prezzo.</p>
+        <p class="form__note">Nessun pagamento richiesto ora: ti rispondiamo con disponibilità e prezzo.<br>Inviando la richiesta accetti che usiamo i dati solo per risponderti, come spiegato nell'<a href="privacy.html">informativa privacy</a>.</p>
         <p class="form__ok" id="form-ok" role="status" aria-live="polite">Grazie! Abbiamo ricevuto la tua richiesta: ti rispondiamo entro poche ore.</p>
       </form>
 
@@ -504,7 +502,7 @@
   <div class="container footer__inner">
     <span class="footer__brand">Le Terrazze sul Mondo</span>
     <span>© <span id="year"></span> — Via Giudice Montea 12, Gravina in Puglia (BA) · CIN IT072023C100127383</span>
-    <span><a href="#hero">Torna su ↑</a></span>
+    <span><a href="privacy.html">Privacy</a> · <a href="#hero">Torna su ↑</a></span>
   </div>
 </footer>
 
@@ -516,7 +514,7 @@
   <button class="lightbox__nav lightbox__next" id="lb-next" aria-label="Immagine successiva">&#8250;</button>
 </div>
 
-<script src="js/main.js?v=22"></script>
+<script src="js/main.js?v=25"></script>
 
 </body>
 </html>

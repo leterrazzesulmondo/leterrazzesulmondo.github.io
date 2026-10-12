@@ -151,6 +151,14 @@ h1,h2,h3,h4{font-family:var(--font-serif);font-weight:400;color:var(--ink);line-
   font-family:var(--font-serif);font-size:1.45rem;letter-spacing:.02em;color:#fff;
   transition:color .5s var(--ease-soft);
 }
+.brand__mark{
+  display:block;width:132px;height:47px;background:#fff;transition:background-color .5s var(--ease-soft);
+  -webkit-mask:url('../img/logo-ponte.svg') center / contain no-repeat;
+  mask:url('../img/logo-ponte.svg') center / contain no-repeat;
+}
+.nav.is-scrolled .brand__mark{background:var(--terracotta)}
+.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+@media (max-width:520px){.brand__mark{width:104px;height:37px}}
 .brand__sub{
   font-size:9px;letter-spacing:.42em;text-transform:uppercase;margin-top:7px;
   color:rgba(255,255,255,.72);transition:color .5s var(--ease-soft);
@@ -937,4 +945,42 @@ body.no-scroll{overflow:hidden}
   .stop__time b{font-size:2.2rem}
   .stop__time small{display:inline;margin-left:8px}
   .stop__body{grid-column:2;padding-left:16px}
+}
+
+/* ============================================================
+   PAGINA PRIVACY
+   ============================================================ */
+.legal-page{background:var(--cream)}
+.legal__top{max-width:760px;margin:0 auto;padding:36px 24px 0}
+.legal__back{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--terracotta)}
+.legal{max-width:760px;margin:0 auto;padding:36px 24px 96px}
+.legal h1{font-size:clamp(2.2rem,1.6rem + 2.6vw,3.2rem);margin-bottom:8px}
+.legal__date{font-size:13px;color:var(--ink-soft);margin-bottom:36px}
+.legal h2{font-size:1.5rem;margin:40px 0 12px}
+.legal p,.legal li{font-size:.97rem;line-height:1.75;color:var(--ink-soft);max-width:68ch}
+.legal p+p,.legal ul+p{margin-top:14px}
+.legal ul{list-style:disc;padding-left:22px;display:grid;gap:10px;margin-top:8px}
+.legal li::marker{color:var(--gold)}
+.legal strong{color:var(--ink);font-weight:500}
+.legal a{color:var(--terracotta);border-bottom:1px solid var(--gold-soft)}
+.form__note a{color:inherit;text-decoration:underline}
+
+
+/* telefoni piccoli o bassi: la hero si compatta per stare tutta sotto la barra */
+@media (max-height:760px){
+  .hero__content{padding-top:64px}
+  .hero__motif{width:min(300px,64vw);margin:4px auto 16px}
+  .hero__eyebrow{margin-bottom:16px;font-size:10px;letter-spacing:.34em}
+  .hero__title{font-size:clamp(2.4rem,11vw,3.2rem);margin-bottom:14px}
+  .hero__sub{font-size:.95rem;margin-bottom:22px;line-height:1.55}
+  .hero__actions{gap:12px}
+  .hero__actions .btn{padding-top:14px;padding-bottom:14px}
+}
+@media (max-height:620px){
+  .hero__motif{display:none}
+  .hero__sub{font-size:.9rem;margin-bottom:16px}
+}
+@media (max-width:360px){
+  .hero__eyebrow::before,.hero__eyebrow::after{width:20px}
+  .brand__mark{width:88px;height:31px}
 }
