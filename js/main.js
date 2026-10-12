@@ -250,12 +250,24 @@
     start();
   });
 
+  /* ---------- Video in galleria: parte solo quando e' visibile ---------- */
+  var galleryVideos = document.querySelectorAll('.gallery video');
+  if (galleryVideos.length && 'IntersectionObserver' in window && !reduced) {
+    var vio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var vid = en.target.querySelector('video');
+        if (en.isIntersecting) { vid.play().catch(function () {}); }
+        else { vid.pause(); }
+      });
+    }, { threshold: 0.35 });
+    galleryVideos.forEach(function (v) { vio.observe(v.parentNode); });
+  }
+
   /* ---------- Lightbox (galleria + camere) ---------- */
   var gallery      = document.getElementById('gallery');
   var lightbox     = document.getElementById('lightbox');
   var lbImg        = document.getElementById('lb-img');
-  var figures      = Array.prototype.slice.call(gallery.querySelectorAll('img'));
-  var lightboxList = figures;
+  var lightboxList = [];
   var index        = 0;
 
   function openLightbox(list, i) {
@@ -285,12 +297,6 @@
     lightbox.classList.remove('is-open');
     document.body.classList.remove('no-scroll');
   }
-
-  gallery.addEventListener('click', function (e) {
-    var fig = e.target.closest('figure');
-    if (!fig) return;
-    openLightbox(figures, figures.indexOf(fig.querySelector('img')));
-  });
 
   document.querySelectorAll('.room__media').forEach(function (media) {
     var roomImgs = Array.prototype.slice.call(media.querySelectorAll('img'));

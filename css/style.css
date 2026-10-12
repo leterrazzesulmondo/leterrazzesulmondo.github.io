@@ -523,8 +523,11 @@ body.no-scroll{overflow:hidden}
    GALLERIA
    ============================================================ */
 .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.gallery figure{position:relative;overflow:hidden;border-radius:var(--radius);cursor:pointer;background:var(--stone)}
-.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease), filter .7s var(--ease-soft)}
+.gallery__col{display:flex;flex-direction:column;gap:14px}
+.gallery figure.grow{flex:1;min-height:0}
+.gallery figure.grow img,.gallery figure.grow video{height:100%;object-fit:cover}
+.gallery figure{position:relative;overflow:hidden;border-radius:var(--radius);cursor:default;background:var(--stone)}
+.gallery img,.gallery video{display:block;width:100%;height:auto;transition:transform .9s var(--ease), filter .7s var(--ease-soft)}
 .gallery figure::after{
   content:"";position:absolute;inset:0;background:rgba(42,37,33,.28);
   opacity:0;transition:opacity .5s var(--ease-soft);
@@ -535,18 +538,13 @@ body.no-scroll{overflow:hidden}
   opacity:0;transition:opacity .5s var(--ease-soft), transform .5s var(--ease);
 }
 @media (hover:hover) and (pointer:fine){
-  .gallery figure:hover::after{opacity:1}
-  .gallery figure:hover img{transform:scale(1.06)}
-  .gallery figure:hover .plus{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
 }
 .gallery figure .plus::before,.gallery figure .plus::after{
   content:"";position:absolute;top:50%;left:50%;background:#fff;
 }
 .gallery figure .plus::before{width:26px;height:1px;transform:translate(-50%,-50%)}
 .gallery figure .plus::after{width:1px;height:26px;transform:translate(-50%,-50%)}
-.g-tall{grid-row:span 2}
-.gallery figure{aspect-ratio:1/1}
-.gallery figure.g-tall{aspect-ratio:1/2.07}
 
 /* Lightbox */
 .lightbox{
@@ -598,7 +596,7 @@ body.no-scroll{overflow:hidden}
 .booking__placeholder{
   flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
   gap:14px;padding:64px 32px;
-  border:1px dashed var(--sand);
+  border:1px solid var(--sand);
   border-radius:var(--radius);
   background:linear-gradient(160deg,var(--cream) 0%,var(--cream-deep) 100%);
 }
@@ -606,6 +604,7 @@ body.no-scroll{overflow:hidden}
 .booking__placeholder .ph-icon svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.05}
 .booking__placeholder h3{font-size:1.65rem;color:var(--ink);max-width:22ch}
 .booking__placeholder p{font-size:.92rem;color:var(--ink-soft);max-width:44ch}
+.booking__links{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:10px}
 .booking__placeholder .ph-chip{
   margin-top:6px;display:inline-flex;align-items:center;gap:9px;
   font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--terracotta);
@@ -687,14 +686,8 @@ body.no-scroll{overflow:hidden}
 }
 .form__ok.is-visible{display:block;animation:fadeUp .6s var(--ease) forwards}
 
-.map{margin-top:56px;height:230px;border-radius:var(--radius);overflow:hidden;position:relative;filter:grayscale(.35) contrast(1.05)}
-.map img{width:100%;height:100%;object-fit:cover}
-.map__pin{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-100%);
-  color:var(--terracotta);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
-  background:var(--cream);padding:9px 16px;border-radius:var(--radius);box-shadow:var(--shadow-m);
-}
-
+.map{margin-top:56px;border-radius:var(--radius);overflow:hidden;background:#fdfef0}
+.map img{display:block;width:100%;height:auto;max-height:300px;object-fit:contain}
 /* ============================================================
    FOOTER
    ============================================================ */
@@ -799,11 +792,11 @@ body.no-scroll{overflow:hidden}
 /* Luoghi e galleria: la foto viene scoperta dal basso e si assesta.
    L'elemento resta sempre "presente"; si ritagliano la foto e i suoi veli. */
 .js .place.reveal,.js .gallery figure.reveal{opacity:1;transform:none;transition:box-shadow 1s var(--ease) .5s, background-color .1s}
-.place img,.gallery figure img{clip-path:inset(-100px)}
-.js .place.reveal img,.js .gallery figure.reveal img{
+.place img,.gallery figure img,.gallery figure video{clip-path:inset(-100px)}
+.js .place.reveal img,.js .gallery figure.reveal img,.js .gallery figure.reveal video{
   transition:clip-path 1.2s var(--ease) var(--d,0s), transform 1.8s var(--ease) var(--d,0s);
 }
-.js .place.reveal:not(.is-visible) img,.js .gallery figure.reveal:not(.is-visible) img{
+.js .place.reveal:not(.is-visible) img,.js .gallery figure.reveal:not(.is-visible) img,.js .gallery figure.reveal:not(.is-visible) video{
   clip-path:inset(100% 0 0 0);transform:scale(1.18);
 }
 .js .place.reveal:not(.is-visible){box-shadow:none}
@@ -816,7 +809,7 @@ body.no-scroll{overflow:hidden}
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
   .reveal,.reveal > *,.head-center.reveal > *{opacity:1 !important;transform:none !important;filter:none !important;clip-path:none !important}
-  .about__media img,.place img,.gallery figure img,.about__media::before{clip-path:none !important}
+  .about__media img,.place img,.gallery figure img,.gallery figure video,.about__media::before{clip-path:none !important}
   .tile-band::after,.tile-wide::after{transform:scaleX(0) !important}
   .about__media img{transform:none !important}
   .hero__title span i{transform:none}
@@ -861,7 +854,6 @@ body.no-scroll{overflow:hidden}
   .burger{display:block}
   .rooms{grid-template-columns:1fr;max-width:460px;margin:0 auto}
   .gallery{grid-template-columns:repeat(2,1fr)}
-  .gallery figure.g-tall{aspect-ratio:1/1;grid-row:span 1}
   .places{grid-auto-rows:180px}
   .place--b,.place--c,.place--d,.place--e,.place--f{grid-column:span 12}
   .form{padding:34px 26px}
@@ -878,7 +870,8 @@ body.no-scroll{overflow:hidden}
   .tile-divider{height:84px;margin-top:-42px;margin-bottom:-42px}
   .tile-wide{background-size:auto 84px}
   .features{grid-template-columns:1fr;margin-top:40px}
-  .gallery{grid-template-columns:1fr 1fr;gap:10px}
+  .gallery{gap:10px}
+  .gallery__col{gap:10px}
   .mobile-menu a{font-size:1.7rem}
   .lightbox__nav{font-size:1.8rem;padding:12px}
 }
@@ -891,3 +884,52 @@ body.no-scroll{overflow:hidden}
 }
 @keyframes scrollLineS{0%{top:-20px}60%{top:20px}100%{top:20px}}
 @media (max-height:740px){.hero__scroll{display:none}}
+
+/* prenotazioni: scelta diretta o portale */
+.booking__choices{display:grid;grid-template-columns:1.25fr 1fr;gap:24px;min-height:0}
+.booking__choice{
+  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  gap:14px;padding:48px 32px;border:1px solid var(--sand);border-radius:var(--radius);
+  background:linear-gradient(160deg,var(--cream) 0%,var(--cream-deep) 100%);
+}
+.booking__choice h3{font-size:1.65rem;color:var(--ink);max-width:20ch}
+.booking__choice p{font-size:.92rem;color:var(--ink-soft);max-width:42ch}
+.booking__choice--direct{border-color:var(--gold)}
+.booking__badge{
+  position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--ink);
+  background:var(--gold-soft);border-radius:100px;padding:5px 16px;
+}
+@media (max-width:860px){.booking__choices{grid-template-columns:1fr}.booking__choice{padding:40px 22px}}
+
+.gallery figure.gallery__video{cursor:default}
+.gallery figure.gallery__video::after{display:none}
+
+/* ============================================================
+   GRAVINA: tempi di percorrenza dal B&B
+   ============================================================ */
+.timeline{list-style:none;position:relative;max-width:760px;margin:64px auto 0;padding:0}
+.timeline::before{
+  content:"";position:absolute;top:14px;bottom:14px;left:calc(150px + 14px);width:1px;
+  background:linear-gradient(180deg,transparent,var(--gold) 6%,var(--gold) 94%,transparent);
+}
+.stop{display:grid;grid-template-columns:150px 28px 1fr;align-items:baseline;column-gap:0;padding:22px 0}
+.stop__time{text-align:right;padding-right:22px;font-family:var(--font-serif);font-size:1.15rem;color:var(--ink-soft);line-height:1}
+.stop__time b{font-weight:400;font-variant-numeric:lining-nums;font-size:3rem;color:var(--terracotta);letter-spacing:-.01em}
+.stop__time small{display:block;margin-top:8px;font-family:var(--font-sans,inherit);font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--ink-soft)}
+.stop__dot{justify-self:center;align-self:start;margin-top:22px;width:11px;height:11px;border-radius:50%;background:var(--cream);border:1.5px solid var(--gold);position:relative;z-index:1}
+.stop__body{padding-left:22px}
+.stop__body h3{font-size:1.55rem;color:var(--ink);line-height:1.2}
+.stop__body p{margin-top:6px;font-size:.95rem;color:var(--ink-soft);max-width:44ch}
+.js .stop.reveal .stop__dot{transition:transform .7s var(--ease) .15s,background-color .7s var(--ease) .15s}
+.js .stop.reveal:not(.is-visible) .stop__dot{transform:scale(.4)}
+.js .stop.reveal.is-visible .stop__dot{background:var(--gold)}
+@media (max-width:560px){
+  .timeline::before{left:7px}
+  .stop{grid-template-columns:14px 1fr;padding:18px 0}
+  .stop__dot{grid-column:1;grid-row:1 / span 2;margin-top:6px}
+  .stop__time{grid-column:2;text-align:left;padding:0 0 8px 16px;font-size:1rem}
+  .stop__time b{font-size:2.2rem}
+  .stop__time small{display:inline;margin-left:8px}
+  .stop__body{grid-column:2;padding-left:16px}
+}
