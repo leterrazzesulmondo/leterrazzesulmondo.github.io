@@ -319,22 +319,67 @@
     if (e.key === 'ArrowRight') openLightbox(lightboxList, index + 1);
   });
 
-  /* ---------- Form (demo: nessun invio reale) ---------- */
+  /* ---------- Form richiesta disponibilita' ---------- */
+  /* Indirizzo del servizio che inoltra le richieste via email (Formspree):
+     finche' e' vuoto il modulo non invia e rimanda a WhatsApp. */
+  var FORM_URL = '';
+  var WHATSAPP = 'https://wa.me/393280639712';
+
   var form = document.getElementById('booking-form');
   var ok   = document.getElementById('form-ok');
+  var err  = document.getElementById('form-err');
+  var send = form.querySelector('button[type="submit"]');
+  var sendLabel = send.querySelector('span').textContent;
+
+  function showError(html, field) {
+    err.innerHTML = html;
+    err.hidden = false;
+    if (field) field.focus();
+  }
+
+  form.addEventListener('input', function () {
+    err.hidden = true;
+    ok.classList.remove('is-visible');
+  });
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    err.hidden = true;
+    ok.classList.remove('is-visible');
+
     var nome  = form.nome.value.trim();
     var email = form.email.value.trim();
 
-    if (!nome || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      (nome ? form.email : form.nome).focus();
+    if (!nome) { showError('Scrivi il tuo nome e cognome.', form.nome); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Controlla l\'indirizzo email: sembra incompleto.', form.email); return; }
+    if (form.arrivo.value && form.partenza.value && form.partenza.value < form.arrivo.value) {
+      showError('La partenza deve essere dopo l\'arrivo.', form.partenza); return;
+    }
+    if (form._gotcha.value) { return; }
+
+    if (!FORM_URL) {
+      showError('L\'invio dal sito non è ancora attivo. Scrivici su <a href="' + WHATSAPP + '" target="_blank" rel="noopener">WhatsApp</a> o chiamaci.');
       return;
     }
-    ok.classList.add('is-visible');
-    form.reset();
-    setTimeout(function () { ok.classList.remove('is-visible'); }, 6000);
+
+    send.disabled = true;
+    send.querySelector('span').textContent = 'Invio in corso…';
+
+    fetch(FORM_URL, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function (res) {
+      if (!res.ok) throw new Error('invio');
+      form.reset();
+      form.ospiti.value = '2 ospiti';
+      ok.classList.add('is-visible');
+    }).catch(function () {
+      showError('Non siamo riusciti a inviare la richiesta. Riprova tra poco, oppure scrivici su <a href="' + WHATSAPP + '" target="_blank" rel="noopener">WhatsApp</a>.');
+    }).then(function () {
+      send.disabled = false;
+      send.querySelector('span').textContent = sendLabel;
+    });
   });
 
   /* ---------- Date minime coerenti ---------- */

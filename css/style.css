@@ -685,6 +685,11 @@ body.no-scroll{overflow:hidden}
   color:var(--gold-soft);font-size:13px;text-align:center;border-radius:var(--radius);
 }
 .form__ok.is-visible{display:block;animation:fadeUp .6s var(--ease) forwards}
+.form__err{margin-top:6px;margin-bottom:6px;padding:12px 14px;border:1px solid #d99a8a;color:#f0b8a8;font-size:13px;border-radius:var(--radius)}
+.form__err[hidden]{display:none}
+.form__err a{color:inherit;text-decoration:underline}
+.field--trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.form .btn[disabled]{opacity:.6;cursor:progress}
 
 .map{margin-top:56px;border-radius:var(--radius);overflow:hidden;background:#fdfef0}
 .map img{display:block;width:100%;height:auto;max-height:300px;object-fit:contain}
