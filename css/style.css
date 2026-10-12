@@ -980,3 +980,5 @@ body.no-scroll{overflow:hidden}
   .hero__eyebrow::before,.hero__eyebrow::after{width:20px}
   .brand__mark{width:34px;height:34px}
 }
+
+@media print{.legal-page{background:#fff}.legal__top{display:none}.legal{padding:0}.legal h2{break-after:avoid}.legal li,.legal p{break-inside:avoid}}
