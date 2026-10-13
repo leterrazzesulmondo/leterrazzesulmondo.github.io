@@ -277,6 +277,14 @@ h1,h2,h3,h4{font-family:var(--font-serif);font-weight:400;color:var(--ink);line-
 .mobile-menu .lang__menu{position:static;box-shadow:none;border:0;background:none;min-width:0;padding:4px 0 0;text-align:center}
 .mobile-menu .lang__menu a{font-family:var(--font-sans);font-size:1rem;color:var(--ink-soft);padding:9px 14px;opacity:1;transform:none;justify-content:center;gap:10px}
 .mobile-menu .lang__menu a[aria-current]{color:var(--ink)}
+.mobile-menu .mm-close{
+  position:absolute;top:max(14px,env(safe-area-inset-top));right:16px;width:48px;height:48px;
+  display:flex;align-items:center;justify-content:center;color:var(--ink);
+  opacity:0;transition:opacity .2s var(--ease-soft), color .3s;
+}
+.mobile-menu.is-open .mm-close{opacity:1;transition:opacity .5s var(--ease) .4s, color .3s}
+.mobile-menu .mm-close svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
+@media (hover:hover){.mobile-menu .mm-close:hover{color:var(--terracotta)}}
 .mobile-menu .mm-mail{font-family:var(--font-sans);font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terracotta);margin-top:26px}
 
 body.no-scroll{overflow:hidden}

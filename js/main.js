@@ -201,6 +201,7 @@
   }
 
   burger.addEventListener('click', function () { toggleMenu(); });
+  document.getElementById('mm-close').addEventListener('click', function () { toggleMenu(false); burger.focus(); });
   mobileMenu.addEventListener('click', function (e) {
     if (e.target.tagName === 'A') toggleMenu(false);
   });
