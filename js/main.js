@@ -22,6 +22,56 @@
   var sections    = links.map(function (l) { return document.querySelector(l.getAttribute('href')); });
   var reduced     = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Lingua: le versioni straniere stanno in /en/, /fr/, /es/ e /de/, un livello sotto ---------- */
+  var LANG = document.documentElement.lang;
+  var ROOT = LANG === 'it' ? '' : '../';
+  var T = LANG === 'de' ? {
+    menuOpen: 'Menü öffnen',
+    menuClose: 'Menü schließen',
+    errName: 'Bitte geben Sie Ihren Vor- und Nachnamen ein.',
+    errEmail: 'Bitte prüfen Sie die E-Mail-Adresse: Sie wirkt unvollständig.',
+    errDates: 'Die Abreise muss nach der Anreise liegen.',
+    errOff: 'Das Senden über die Website ist noch nicht aktiv. Schreiben Sie uns über <a href="%W" target="_blank" rel="noopener">WhatsApp</a> oder rufen Sie uns an.',
+    sending: 'Wird gesendet …',
+    errSend: 'Wir konnten Ihre Anfrage nicht senden. Bitte versuchen Sie es gleich noch einmal oder schreiben Sie uns über <a href="%W" target="_blank" rel="noopener">WhatsApp</a>.'
+  } : LANG === 'es' ? {
+    menuOpen: 'Abrir el menú',
+    menuClose: 'Cerrar el menú',
+    errName: 'Escriba su nombre y apellidos.',
+    errEmail: 'Revise la dirección de correo: parece incompleta.',
+    errDates: 'La salida debe ser posterior a la llegada.',
+    errOff: 'El envío desde el sitio aún no está activo. Escríbanos por <a href="%W" target="_blank" rel="noopener">WhatsApp</a> o llámenos.',
+    sending: 'Enviando…',
+    errSend: 'No hemos podido enviar su solicitud. Inténtelo de nuevo en unos instantes o escríbanos por <a href="%W" target="_blank" rel="noopener">WhatsApp</a>.'
+  } : LANG === 'fr' ? {
+    menuOpen: 'Ouvrir le menu',
+    menuClose: 'Fermer le menu',
+    errName: 'Indiquez votre nom et prénom.',
+    errEmail: 'Vérifiez l\'adresse e-mail : elle semble incomplète.',
+    errDates: 'Le départ doit être postérieur à l\'arrivée.',
+    errOff: 'L\'envoi depuis le site n\'est pas encore actif. Écrivez-nous sur <a href="%W" target="_blank" rel="noopener">WhatsApp</a> ou appelez-nous.',
+    sending: 'Envoi en cours…',
+    errSend: 'Nous n\'avons pas pu envoyer votre demande. Réessayez dans un instant, ou écrivez-nous sur <a href="%W" target="_blank" rel="noopener">WhatsApp</a>.'
+  } : LANG === 'en' ? {
+    menuOpen: 'Open menu',
+    menuClose: 'Close menu',
+    errName: 'Please enter your full name.',
+    errEmail: 'Please check the email address: it looks incomplete.',
+    errDates: 'The departure date must be after the arrival date.',
+    errOff: 'Sending from the site is not active yet. Write to us on <a href="%W" target="_blank" rel="noopener">WhatsApp</a> or give us a call.',
+    sending: 'Sending…',
+    errSend: 'We could not send your request. Please try again shortly, or write to us on <a href="%W" target="_blank" rel="noopener">WhatsApp</a>.'
+  } : {
+    menuOpen: 'Apri il menu',
+    menuClose: 'Chiudi il menu',
+    errName: 'Scrivi il tuo nome e cognome.',
+    errEmail: 'Controlla l\'indirizzo email: sembra incompleto.',
+    errDates: 'La partenza deve essere dopo l\'arrivo.',
+    errOff: 'L\'invio dal sito non è ancora attivo. Scrivici su <a href="%W" target="_blank" rel="noopener">WhatsApp</a> o chiamaci.',
+    sending: 'Invio in corso…',
+    errSend: 'Non siamo riusciti a inviare la richiesta. Riprova tra poco, oppure scrivici su <a href="%W" target="_blank" rel="noopener">WhatsApp</a>.'
+  };
+
   /* ---------- Hero: l'illustrazione resta larga quanto la riga "Bed & Breakfast..." ---------- */
   var heroMotif   = document.querySelector('.hero__motif');
   var heroEyebrow = document.querySelector('.hero__eyebrow');
@@ -40,8 +90,8 @@
 
   function desiredHeroVideo() {
     return mobileHeroQuery.matches
-      ? { src: 'img/hero-mobile.mp4?v=2', poster: 'img/hero-mobile-poster.jpg' }
-      : { src: 'img/hero-desktop.mp4?v=2', poster: 'img/hero-desktop-poster.jpg' };
+      ? { src: ROOT + 'img/hero-mobile.mp4?v=2', poster: ROOT + 'img/hero-mobile-poster.jpg' }
+      : { src: ROOT + 'img/hero-desktop.mp4?v=2', poster: ROOT + 'img/hero-desktop-poster.jpg' };
   }
 
   function ensureHeroVideo() {
@@ -146,7 +196,7 @@
     mobileMenu.classList.toggle('is-open', open);
     burger.classList.toggle('is-open', open);
     burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Chiudi il menu' : 'Apri il menu');
+    burger.setAttribute('aria-label', open ? T.menuClose : T.menuOpen);
     document.body.classList.toggle('no-scroll', open);
   }
 
@@ -156,6 +206,18 @@
   });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') toggleMenu(false);
+  });
+
+  /* ---------- Menu lingue: si chiude con un clic fuori, con Esc o scegliendo una lingua ---------- */
+  var langMenus = Array.prototype.slice.call(document.querySelectorAll('details.lang'));
+  document.addEventListener('click', function (e) {
+    langMenus.forEach(function (d) { if (d.open && !d.contains(e.target)) d.open = false; });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    langMenus.forEach(function (d) {
+      if (d.open) { d.open = false; d.querySelector('summary').focus(); }
+    });
   });
 
   /* ---------- Scroll fluido (con fallback per browser senza scroll-behavior) ---------- */
@@ -350,20 +412,20 @@
     var nome  = form.nome.value.trim();
     var email = form.email.value.trim();
 
-    if (!nome) { showError('Scrivi il tuo nome e cognome.', form.nome); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Controlla l\'indirizzo email: sembra incompleto.', form.email); return; }
+    if (!nome) { showError(T.errName, form.nome); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError(T.errEmail, form.email); return; }
     if (form.arrivo.value && form.partenza.value && form.partenza.value < form.arrivo.value) {
-      showError('La partenza deve essere dopo l\'arrivo.', form.partenza); return;
+      showError(T.errDates, form.partenza); return;
     }
     if (form._honeypot.value) { return; }
 
     if (!FORM_URL) {
-      showError('L\'invio dal sito non è ancora attivo. Scrivici su <a href="' + WHATSAPP + '" target="_blank" rel="noopener">WhatsApp</a> o chiamaci.');
+      showError(T.errOff.replace('%W', WHATSAPP));
       return;
     }
 
     send.disabled = true;
-    send.querySelector('span').textContent = 'Invio in corso…';
+    send.querySelector('span').textContent = T.sending;
 
     fetch(FORM_URL, {
       method: 'POST',
@@ -372,10 +434,10 @@
     }).then(function (res) {
       if (!res.ok) throw new Error('invio');
       form.reset();
-      form.ospiti.value = '2 ospiti';
+      form.ospiti.value = '2 ospiti'; /* i valori restano in italiano: cosi' le email ricevute sono uniformi */
       ok.classList.add('is-visible');
     }).catch(function () {
-      showError('Non siamo riusciti a inviare la richiesta. Riprova tra poco, oppure scrivici su <a href="' + WHATSAPP + '" target="_blank" rel="noopener">WhatsApp</a>.');
+      showError(T.errSend.replace('%W', WHATSAPP));
     }).then(function () {
       send.disabled = false;
       send.querySelector('span').textContent = sendLabel;

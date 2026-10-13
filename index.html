@@ -6,6 +6,12 @@
 <title>Le Terrazze sul Mondo — B&amp;B a Gravina in Puglia</title>
 <meta name="description" content="Le Terrazze sul Mondo, bed &amp; breakfast dal fascino antico nel cuore storico di Gravina in Puglia. Due camere raffinate e, per la suite Zenit, due terrazze private affacciate sulla gravina.">
 <link rel="canonical" href="https://leterrazzesulmondo.it/">
+<link rel="alternate" hreflang="it" href="https://leterrazzesulmondo.it/">
+<link rel="alternate" hreflang="en" href="https://leterrazzesulmondo.it/en/">
+<link rel="alternate" hreflang="fr" href="https://leterrazzesulmondo.it/fr/">
+<link rel="alternate" hreflang="es" href="https://leterrazzesulmondo.it/es/">
+<link rel="alternate" hreflang="de" href="https://leterrazzesulmondo.it/de/">
+<link rel="alternate" hreflang="x-default" href="https://leterrazzesulmondo.it/">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -27,6 +33,7 @@
   "checkinTime": "15:00",
   "checkoutTime": "10:30",
   "numberOfRooms": 2,
+  "availableLanguage": ["it", "en", "fr", "es", "de"],
   "sameAs": [
     "https://www.instagram.com/le.terrazze.sul.mondo/"
   ]
@@ -47,6 +54,10 @@
      Dominio definitivo: leterrazzesulmondo.it -->
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="de_DE">
 <meta property="og:site_name" content="Le Terrazze sul Mondo">
 <meta property="og:title" content="Le Terrazze sul Mondo — B&amp;B a Gravina in Puglia">
 <meta property="og:description" content="Dimora dal fascino antico nel centro storico di Gravina in Puglia: due camere raffinate e, per la suite Zenit, due terrazze private affacciate sulla gravina.">
@@ -60,7 +71,7 @@
 <link rel="stylesheet" href="fonts/fonts.css">
 
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="css/style.css?v=93">
+<link rel="stylesheet" href="css/style.css?v=100">
 </head>
 
 <body>
@@ -81,6 +92,18 @@
         <li><a class="nav__link" href="#galleria">Galleria</a></li>
         <li><a class="nav__link" href="#contatti">Contatti</a></li>
         <li><a class="nav__cta" href="#booking-form">Prenota</a></li>
+        <li class="nav__langs">
+        <details class="lang">
+          <summary class="lang__btn" aria-label="Lingua"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9S14.5 18.3 12 21c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg><span>IT</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <ul class="lang__menu">
+            <li><a href="./" hreflang="it" lang="it" aria-current="true">Italiano</a></li>
+            <li><a href="en/" hreflang="en" lang="en">English</a></li>
+            <li><a href="fr/" hreflang="fr" lang="fr">Français</a></li>
+            <li><a href="es/" hreflang="es" lang="es">Español</a></li>
+            <li><a href="de/" hreflang="de" lang="de">Deutsch</a></li>
+          </ul>
+        </details>
+        </li>
       </ul>
     </nav>
 
@@ -97,6 +120,18 @@
   <a href="#galleria">Galleria</a>
   <a href="#contatti">Contatti</a>
   <a href="#booking-form" class="mm-mail">Prenota il tuo soggiorno</a>
+  <div class="mm-langs">
+  <details class="lang lang--mobile">
+    <summary class="lang__btn" aria-label="Lingua"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9S14.5 18.3 12 21c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg><span>IT</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+    <ul class="lang__menu">
+      <li><a href="./" hreflang="it" lang="it" aria-current="true">Italiano</a></li>
+      <li><a href="en/" hreflang="en" lang="en">English</a></li>
+      <li><a href="fr/" hreflang="fr" lang="fr">Français</a></li>
+      <li><a href="es/" hreflang="es" lang="es">Español</a></li>
+      <li><a href="de/" hreflang="de" lang="de">Deutsch</a></li>
+    </ul>
+  </details>
+  </div>
 </div>
 
 <!-- ============================ HERO ============================ -->
@@ -508,6 +543,8 @@
           <textarea id="messaggio" name="messaggio" placeholder="Raccontaci del tuo viaggio…"></textarea>
         </div>
 
+        <input type="hidden" name="lingua" value="Italiano">
+
         <div class="field--trap" aria-hidden="true">
           <label for="sito-web">Non compilare questo campo</label>
           <input type="text" id="sito-web" name="_honeypot" tabindex="-1" autocomplete="off">
@@ -540,7 +577,7 @@
   <button class="lightbox__nav lightbox__next" id="lb-next" aria-label="Immagine successiva">&#8250;</button>
 </div>
 
-<script src="js/main.js?v=26"></script>
+<script src="js/main.js?v=31"></script>
 
 </body>
 </html>
