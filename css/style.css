@@ -1031,3 +1031,20 @@ body.no-scroll{overflow:hidden}
 }
 
 @media print{.legal-page{background:#fff}.legal__top{display:none}.legal{padding:0}.legal h2{break-after:avoid}.legal li,.legal p{break-inside:avoid}}
+
+/* ============================================================
+   BOTTONE WHATSAPP FISSO (compare dalla sezione "Chi siamo")
+   ============================================================ */
+.wa-fab{
+  position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:90;
+  width:56px;height:56px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--terracotta);color:var(--white);box-shadow:var(--shadow-m);
+  opacity:0;visibility:hidden;transform:translateY(12px);
+  transition:opacity .35s var(--ease-soft),transform .35s var(--ease),visibility 0s linear .35s,background .2s;
+}
+.wa-fab.is-visible{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.wa-fab:hover{background:var(--terracotta-deep)}
+.wa-fab:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wa-fab svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media (prefers-reduced-motion:reduce){.wa-fab{transition:none}}

@@ -454,6 +454,23 @@
     if (form.partenza.value && form.partenza.value < form.arrivo.value) form.partenza.value = '';
   });
 
+  /* ---------- Bottone WhatsApp fisso: compare dalla sezione "Chi siamo" ---------- */
+  var waFab = document.getElementById('wa-fab');
+  var waStart = document.getElementById('chi-siamo') || document.getElementById('about');
+  if (waFab && waStart) {
+    var waTick = false;
+    var waUpdate = function () {
+      waTick = false;
+      var on = waStart.getBoundingClientRect().top < window.innerHeight * 0.6;
+      waFab.classList.toggle('is-visible', on);
+      waFab.tabIndex = on ? 0 : -1;
+    };
+    window.addEventListener('scroll', function () {
+      if (!waTick) { waTick = true; requestAnimationFrame(waUpdate); }
+    }, { passive: true });
+    waUpdate();
+  }
+
   /* ---------- Anno nel footer ---------- */
   document.getElementById('year').textContent = new Date().getFullYear();
 })();
